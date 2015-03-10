@@ -46,7 +46,7 @@ public class Boleto extends HttpServlet {
                     dispatcher = request.getRequestDispatcher("Boleto.jsp");
                     dispatcher.forward(request, response);
                 } else {
-                    response.sendRedirect("/Loteria/Apuesta");
+                    response.sendRedirect("/Loteria/Apuesta?numBol=" + numBol);
                 }
 
             } catch (NumberFormatException | IOException e) {
