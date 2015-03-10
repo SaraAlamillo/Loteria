@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% String numBol = (String) request.getAttribute("numBol"); %>
 <% Integer numero = Integer.parseInt(numBol);%>
+<% String mensaje_error = (String) request.getAttribute("error");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,18 +16,22 @@
     </head>
     <body>
         <p>Se juegan <%= numBol%> boletos</p>
-        <form action="/Loteria/Apuesta" method="POST">
-            <% for (Integer i = 0; i < numero; i++) {%>
+        <form action="/Loteria/Apuesta?numBol=<%= numBol%>" method="POST">
+            <% for (Integer i = 1; i <= numero; i++) {%>
             <p>
-                Boleto <%= numero.toString()%> - Número de apuestas: 
+                Boleto <%= i.toString()%> - Número de apuestas: 
                 <select name="numApu">
-                    <% for (Integer j = 1; j <= 6; j++) {%>
+                    <option value="0">Seleccione</option>
+                    <% for (Integer j = 1; j <= 8; j++) {%>
                     <option value="<%= j.toString()%>"><%= j.toString()%></option>
                     <% } %>
                 </select>
             </p>
-            <p><input type="submit" name="enviar" value="Continuar" /></p>
             <% }%>
+            <p><input type="submit" name="enviar" value="Continuar" /></p>
         </form>
+        <% if (mensaje_error != null) {%>
+        <p><%= mensaje_error%></p>
+        <% }%>  
     </body>
 </html>
