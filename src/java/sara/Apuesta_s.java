@@ -1,3 +1,5 @@
+package sara;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,7 +7,7 @@
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sara
  */
-@WebServlet(urlPatterns = {"/NewServlet"})
-public class NewServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/Apuesta"})
+public class Apuesta_s extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,17 +33,39 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        if (request.getParameter("numBol") == null) {
+            response.sendRedirect("/Loteria/Boleto");
+        } else {
+            String numBol = request.getParameter("numBol");
+            RequestDispatcher dispatcher;
+            request.setAttribute("numBol", numBol);
+            if (request.getParameter("enviar") != null) {
+                try {
+                    String[] numApu = request.getParameterValues("numApu");
+
+                    for (String nA : numApu) {
+                        Integer numero = Integer.parseInt(nA);
+
+                        if (numero < 1 || numero > 8) {
+                            request.setAttribute("error", "Debe introducir un número entero entre 1 y 8");
+                            dispatcher = request.getRequestDispatcher("Apuesta.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                    }
+                    request.setAttribute("numApu", numApu);
+                    request.setAttribute("numBol", numBol);
+                    dispatcher = request.getRequestDispatcher("Texto.jsp");
+                    dispatcher.forward(request, response);
+
+                } catch (NumberFormatException | IOException e) {
+                    request.setAttribute("error", "Debe seleccionar algún número");
+                    dispatcher = request.getRequestDispatcher("Apuesta.jsp");
+                    dispatcher.forward(request, response);
+                }
+            } else {
+                dispatcher = request.getRequestDispatcher("Apuesta.jsp");
+                dispatcher.forward(request, response);
+            }
         }
     }
 

@@ -1,3 +1,5 @@
+package sara;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Sara
  */
 @WebServlet(urlPatterns = {"/Boleto"})
-public class Boleto extends HttpServlet {
+public class Boleto_s extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
