@@ -47,7 +47,7 @@ public class Apuesta_s extends HttpServlet {
                     int cantidadBoletos = Integer.parseInt(numBol);
                     int[][] apuestasGeneradas = new int[cantidadBoletos][];
 
-                    for (int clave = 0; clave < numApu.length; clave++) {
+                    for (int clave = 0; clave < cantidadBoletos; clave++) {
                         Integer numero = Integer.parseInt(numApu[clave]);
 
                         if (numero < 1 || numero > 8) {
@@ -57,7 +57,9 @@ public class Apuesta_s extends HttpServlet {
                         }
 
                         precio = precio + numero;
+                        
                         int cantidadApuestas = Integer.parseInt(numApu[clave]);
+                        
                         for (int i = 0; i < cantidadApuestas; i++) {
                             apuestasGeneradas[clave] = boleto.generarApuesta();
                         }

@@ -19,25 +19,29 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% for (int b = 0; b < numBol; b++) { %>
         <table border="1">
             <% for (int fila = 0; fila < 10; fila++) { %>
             <tr>
-                <% for (int numApuesta = 1; numApuesta <= numApu.length; numApuesta++) { %>
+                <% int apuesta = Integer.parseInt(numApu[b]); %>
+                <% for (int numApuesta = 1; numApuesta <= apuesta; numApuesta++) { %>
                     <% for (int columna = 0; columna < 5; columna++) { %>
-                        <% if (fila == 0 && columna == 0) {%>
+                    <% if (fila == 0 && columna == 0) {%>
                             <td style="background-color: black; color: white;"><%= numApuesta%></td>
                         <% } else { %>
                             <% int valorColumna = fila + (columna * 10);%>
-                            <% if (bol.indexOf(apuestasGeneradas[numApuesta - 1], valorColumna)) {%>
-                                <td style="background-color: green; color: white;"><%= valorColumna%></td>
-                            <% } else {%>
-                                <td><%= valorColumna%></td>
-                            <% }%>
+                            <% if (bol.indexOf(apuestasGeneradas[b], valorColumna)) { %>
+                            <td style="background-color: green; color: white;"><%= valorColumna%></td>
+                            <% } else { %>
+                            <td><%=valorColumna %></td>
+                            <% } %>
                         <% }%>
                     <% } %>
                 <% } %>
             </tr>
             <% }%>
         </table>
+        <br />
+        <%} %>
     </body>
 </html>
