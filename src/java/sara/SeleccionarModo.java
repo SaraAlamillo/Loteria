@@ -1,10 +1,9 @@
-package sara;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package sara;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +13,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Sara
+ * @author 2daw
  */
-@WebServlet(urlPatterns = {"/Texto"})
-public class Texto_s extends HttpServlet {
+@WebServlet(name = "SeleccionarModo", urlPatterns = {"/Modo"})
+public class SeleccionarModo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,18 +33,19 @@ public class Texto_s extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
-        //Boleto b = new Boleto();
-        PrintWriter out = response.getWriter();
-        //int i = b.generarNumero(4, 1);
-        //out.println(i);
-        //prueba p = new prueba();
-        //out.println(p.cadena());
-        RequestDispatcher dispatcher;
-            dispatcher = request.getRequestDispatcher("prueba.jsp");
+        String modo = request.getParameter("modo");
+
+        if (modo == null) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
-        
-        
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("modo", modo);
+            response.sendRedirect("/Loteria/Boleto");
+
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

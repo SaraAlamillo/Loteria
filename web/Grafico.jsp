@@ -9,6 +9,7 @@
 <% String[] numApu = (String[]) request.getAttribute("numApu"); %>
 <% int[][] apuestasGeneradas = (int[][]) request.getAttribute("apuestasGeneradas"); %>
 <% String boleto = (String) request.getAttribute("numBol"); %>
+<% String precio = (String) request.getAttribute("precio"); %>
 <% Integer numBol = Integer.parseInt(boleto);%>
 <%! Boleto bol = new Boleto(); %>
 <%! int precio = 0;%>
@@ -19,29 +20,33 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% for (int b = 0; b < numBol; b++) { %>
+        <% for (int b = 0; b < numBol; b++) {%>
+        <p>Boleto <%=b + 1%>º</p>
+        <p>Reintegro: <%= bol.generarReintegro()%></p>
+        <% int apuesta = Integer.parseInt(numApu[b]);%>
+        <p>Importe boleto: <%=apuesta%>€</p>
         <table border="1">
             <% for (int fila = 0; fila < 10; fila++) { %>
             <tr>
-                <% int apuesta = Integer.parseInt(numApu[b]); %>
                 <% for (int numApuesta = 1; numApuesta <= apuesta; numApuesta++) { %>
-                    <% for (int columna = 0; columna < 5; columna++) { %>
-                    <% if (fila == 0 && columna == 0) {%>
-                            <td style="background-color: black; color: white;"><%= numApuesta%></td>
-                        <% } else { %>
-                            <% int valorColumna = fila + (columna * 10);%>
-                            <% if (bol.indexOf(apuestasGeneradas[b], valorColumna)) { %>
-                            <td style="background-color: green; color: white;"><%= valorColumna%></td>
-                            <% } else { %>
-                            <td><%=valorColumna %></td>
-                            <% } %>
-                        <% }%>
-                    <% } %>
+                <% for (int columna = 0; columna < 5; columna++) { %>
+                <% if (fila == 0 && columna == 0) {%>
+                <td style="background-color: black; color: white;"><%= numApuesta%></td>
+                <% } else { %>
+                <% int valorColumna = fila + (columna * 10);%>
+                <% if (bol.indexOf(apuestasGeneradas[b], valorColumna)) {%>
+                <td style="background-color: green; color: white;"><%= valorColumna%></td>
+                <% } else {%>
+                <td><%=valorColumna%></td>
+                <% } %>
+                <% }%>
+                <% } %>
                 <% } %>
             </tr>
             <% }%>
         </table>
         <br />
-        <%} %>
+        <%}%>
+        <p>El importe total que debe abonar son <%= precio %>€</p>
     </body>
 </html>
