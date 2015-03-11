@@ -48,6 +48,6 @@
         </table>
         <br />
         <%}%>
-        <p>El importe total que debe abonar son <%= precio %>€</p>
+        <p>El importe total que debe abonar son <%= precio%>€</p>
     </body>
 </html>

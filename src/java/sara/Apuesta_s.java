@@ -6,7 +6,6 @@ package sara;
  * and open the template in the editor.
  */
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,16 +41,16 @@ public class Apuesta_s extends HttpServlet {
             request.setAttribute("numBol", numBol);
             Boleto boleto = new Boleto();
             if (request.getParameter("enviar") != null) {
+                String[] numApu = request.getParameterValues("numApu");
                 try {
-                    String[] numApu = request.getParameterValues("numApu");
                     Integer precio = 0;
                     int cantidadBoletos = Integer.parseInt(numBol);
                     int[][] apuestasGeneradas = new int[cantidadBoletos][];
-
                     for (int clave = 0; clave < cantidadBoletos; clave++) {
                         Integer numero = Integer.parseInt(numApu[clave]);
 
                         if (numero < 1 || numero > 8) {
+                            request.setAttribute("numApu", numApu);
                             request.setAttribute("error", "Debe introducir un número entero entre 1 y 8");
                             dispatcher = request.getRequestDispatcher("Apuesta.jsp");
                             dispatcher.forward(request, response);
@@ -85,6 +84,7 @@ public class Apuesta_s extends HttpServlet {
                     }
                     dispatcher.forward(request, response);
                 } catch (NumberFormatException | IOException e) {
+                    request.setAttribute("numApu", numApu);
                     request.setAttribute("error", "Debe seleccionar algún número");
                     dispatcher = request.getRequestDispatcher("Apuesta.jsp");
                     dispatcher.forward(request, response);

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% String mensaje_error = (String) request.getAttribute("error");%>
+<% String numBol = (String) request.getAttribute("numBol");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +16,7 @@
     <body>
         <%@include file="Encabezado.jsp" %>
         <form action="/Loteria/Boleto" method="POST">
-            <p>Número de boletos: <input type="text" name="numBol" /></p>
+            <p>Número de boletos: <input type="text" name="numBol" value="<%= numBol == null? "" : numBol %>" /></p>
             <p><input type="submit" name="enviar" value="Continuar" /></p>
                 <% if (mensaje_error != null) {%>
             <p><%= mensaje_error%></p>

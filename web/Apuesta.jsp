@@ -8,6 +8,7 @@
 <% String numBol = (String) request.getAttribute("numBol"); %>
 <% Integer numero = Integer.parseInt(numBol);%>
 <% String mensaje_error = (String) request.getAttribute("error");%>
+<% String[] numApu = (String[]) request.getAttribute("numApu");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,13 +19,17 @@
         <%@include file="Encabezado.jsp" %>
         <p>Se juegan <%= numBol%> boletos</p>
         <form action="/Loteria/Apuesta?numBol=<%= numBol%>" method="POST">
-            <% for (Integer i = 1; i <= numero; i++) {%>
+            <% for (Integer i = 0; i < numero; i++) {%>
             <p>
-                Boleto <%= i.toString()%> - Número de apuestas: 
+                Boleto <%= i + 1 %> - Número de apuestas: 
                 <select name="numApu">
                     <option value="0">Seleccione</option>
                     <% for (Integer j = 1; j <= 8; j++) {%>
-                    <option value="<%= j.toString()%>"><%= j.toString()%></option>
+                    <% if (numApu != null && numApu[i].equals(j)) { %>
+                    <option value="<%= j %>" selected="selected"><%= j %></option>
+                    <% } else { %>
+                    <option value="<%= j %>"><%= j %></option>
+                    <% } %>
                     <% } %>
                 </select>
             </p>

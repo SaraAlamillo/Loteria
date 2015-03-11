@@ -5,7 +5,6 @@ package sara;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,18 +39,21 @@ public class Boleto_s extends HttpServlet {
             dispatcher = request.getRequestDispatcher("Boleto.jsp");
             dispatcher.forward(request, response);
         } else {
+            String numBol = request.getParameter("numBol");
             try {
-                Integer numBol = Integer.parseInt(request.getParameter("numBol"));
+                Integer numero = Integer.parseInt(numBol);
 
-                if (numBol < 1 || numBol > 10) {
+                if (numero < 1 || numero > 10) {
+                    request.setAttribute("numBol", numBol);
                     request.setAttribute("error", "Debe introducir un número entero entre 1 y 10");
                     dispatcher = request.getRequestDispatcher("Boleto.jsp");
                     dispatcher.forward(request, response);
                 } else {
-                    response.sendRedirect("/Loteria/Apuesta?numBol=" + numBol);
+                    response.sendRedirect("/Loteria/Apuesta?numBol=" + numero);
                 }
 
             } catch (NumberFormatException | IOException e) {
+                request.setAttribute("numBol", numBol);
                 request.setAttribute("error", "Debe introducir un número entero");
                 dispatcher = request.getRequestDispatcher("Boleto.jsp");
                 dispatcher.forward(request, response);

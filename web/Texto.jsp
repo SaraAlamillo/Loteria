@@ -10,7 +10,7 @@
 <% String boleto = (String) request.getAttribute("numBol"); %>
 <% String precio = (String) request.getAttribute("precio"); %>
 <% Integer numBol = Integer.parseInt(boleto);%>
-<%! Boleto bol = new Boleto(); %>
+<%! Boleto bol = new Boleto();%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,17 +22,17 @@
         <% for (Integer i = 1; i <= numBol; i++) {%>
         <p>Boleto <%= i%>º</p>
         <% Integer apuesta = Integer.parseInt(numApu[i - 1]); %>
-        <% for (Integer j = 1; j <= apuesta; j++) { %>
+        <% for (Integer j = 1; j <= apuesta; j++) {%>
         <p>
-            Apuesta <%= j.toString() %>: 
-            <% for(int num : bol.generarApuesta()){ %>
-            <%=num %>
+            Apuesta <%= j.toString()%>: 
+            <% for (int num : bol.generarApuesta()) {%>
+            <%=num%>
             <% } %>
         </p>
-        <% } %>
-        <p>Reintegro: <%=bol.generarReintegro() %></p>
-        <p>Importe boleto: <%=apuesta %>€</p>
         <% }%>
-        <p>El importe total que debe abonar es <%=precio %>€.</p>
+        <p>Reintegro: <%=bol.generarReintegro()%></p>
+        <p>Importe boleto: <%=apuesta%>€</p>
+        <% }%>
+        <p>El importe total que debe abonar es <%=precio%>€.</p>
     </body>
 </html>
