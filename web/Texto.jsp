@@ -8,9 +8,9 @@
 <%@page import="sara.Boleto" %>
 <% String[] numApu = (String[]) request.getAttribute("numApu"); %>
 <% String boleto = (String) request.getAttribute("numBol"); %>
+<% String precio = (String) request.getAttribute("precio"); %>
 <% Integer numBol = Integer.parseInt(boleto);%>
 <%! Boleto bol = new Boleto(); %>
-<%! int precio = 0; %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +31,6 @@
         <% } %>
         <p>Reintegro: <%=bol.generarReintegro() %></p>
         <p>Importe boleto: <%=apuesta %>€</p>
-        <% precio = precio + apuesta; %>
         <% }%>
         <p>El importe total que debe abonar es <%=precio %>€.</p>
     </body>
