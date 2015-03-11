@@ -15,6 +15,7 @@
         <title>Apuesta</title>
     </head>
     <body>
+        <%@include file="Encabezado.jsp" %>
         <p>Se juegan <%= numBol%> boletos</p>
         <form action="/Loteria/Apuesta?numBol=<%= numBol%>" method="POST">
             <% for (Integer i = 1; i <= numero; i++) {%>

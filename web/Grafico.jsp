@@ -20,6 +20,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="Encabezado.jsp" %>
         <% for (int b = 0; b < numBol; b++) {%>
         <p>Boleto <%=b + 1%>º</p>
         <p>Reintegro: <%= bol.generarReintegro()%></p>

@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -57,9 +58,9 @@ public class Apuesta_s extends HttpServlet {
                         }
 
                         precio = precio + numero;
-                        
+
                         int cantidadApuestas = Integer.parseInt(numApu[clave]);
-                        
+
                         for (int i = 0; i < cantidadApuestas; i++) {
                             apuestasGeneradas[clave] = boleto.generarApuesta();
                         }
@@ -68,8 +69,20 @@ public class Apuesta_s extends HttpServlet {
                     request.setAttribute("numBol", numBol);
                     request.setAttribute("apuestasGeneradas", apuestasGeneradas);
                     request.setAttribute("precio", precio.toString());
-                    //dispatcher = request.getRequestDispatcher("Texto.jsp");
-                   dispatcher = request.getRequestDispatcher("Grafico.jsp");
+
+                    HttpSession session = request.getSession();
+                    String modo = (String) session.getAttribute("modo");
+                    switch (modo) {
+                        case "texto":
+                            dispatcher = request.getRequestDispatcher("Texto.jsp");
+                            break;
+                        case "grafico":
+                            dispatcher = request.getRequestDispatcher("Grafico.jsp");
+                            break;
+                        default:
+                            dispatcher = request.getRequestDispatcher("index.jsp");
+                            break;
+                    }
                     dispatcher.forward(request, response);
                 } catch (NumberFormatException | IOException e) {
                     request.setAttribute("error", "Debe seleccionar algún número");

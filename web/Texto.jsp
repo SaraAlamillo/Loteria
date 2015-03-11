@@ -18,6 +18,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="Encabezado.jsp" %>
         <% for (Integer i = 1; i <= numBol; i++) {%>
         <p>Boleto <%= i%>º</p>
         <% Integer apuesta = Integer.parseInt(numApu[i - 1]); %>

@@ -13,6 +13,7 @@
         <title>Boletos</title>
     </head>
     <body>
+        <%@include file="Encabezado.jsp" %>
         <form action="/Loteria/Boleto" method="POST">
             <p>Número de boletos: <input type="text" name="numBol" /></p>
             <p><input type="submit" name="enviar" value="Continuar" /></p>
