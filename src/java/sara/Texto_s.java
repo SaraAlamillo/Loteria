@@ -7,6 +7,8 @@ package sara;
  */
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,8 +34,15 @@ public class Texto_s extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String[] apuestas = (String[]) request.getAttribute("apuestas");
-        String numBol = (String) request.getAttribute("numBol");
+        //Boleto b = new Boleto();
+        PrintWriter out = response.getWriter();
+        //int i = b.generarNumero(4, 1);
+        //out.println(i);
+        //prueba p = new prueba();
+        //out.println(p.cadena());
+        RequestDispatcher dispatcher;
+            dispatcher = request.getRequestDispatcher("prueba.jsp");
+            dispatcher.forward(request, response);
         
         
     }

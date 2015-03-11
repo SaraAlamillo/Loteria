@@ -7,10 +7,11 @@ import java.util.Random;
  * @author Sara
  */
 public class Boleto {
-    private Random aleatorio;
     
-    private int generarNumero(int max, int min) {
+    public int generarNumero(int max, int min) {
+        Random aleatorio = new Random();
         return aleatorio.nextInt((max - min) + 1) + min;
+        
     }
     public int generarReintegro() {
         return this.generarNumero(9, 1);
