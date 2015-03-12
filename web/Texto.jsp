@@ -7,10 +7,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="sara.Boleto" %>
 <%
-    String[] numApu = (String[]) request.getAttribute("numApu");
-    Integer boleto = (Integer) request.getAttribute("numBol");
+    int[][][] primitiva = (int[][][]) request.getAttribute("primitiva");
     String precio = (String) request.getAttribute("precio");
-    Boleto bol = new Boleto();
+    Boleto boleto = new Boleto();
 %>
 <!DOCTYPE html>
 <html>
@@ -20,20 +19,23 @@
     </head>
     <body>
         <%@include file="Encabezado.jsp" %>
-        <% for (Integer i = 1; i <= boleto; i++) {%>
-        <p>Boleto <%= i%>º</p>
-        <% Integer apuesta = Integer.parseInt(numApu[i - 1]); %>
-        <% for (Integer j = 1; j <= apuesta; j++) {%>
+        <% for (int i = 0; i < primitiva.length; i++) {%>
+        <p>Boleto <%= i + 1%>º</p>
+        <% for (int j = 0; j < primitiva[i].length; j++) {%>
         <p>
-            Apuesta <%= j.toString()%>: 
-            <% for (int num : bol.generarApuesta()) {%>
-            <%=num%>
-            <% } %>
+            Apuesta <%= j + 1%>: 
+            <% for (int k = 0; k < primitiva[i][j].length; k++) {
+                    if (k == (primitiva[i][j].length - 1)) { %>
+            <%= primitiva[i][j][k]%>
+            <% } else { %>
+            <%= primitiva[i][j][k]%>,
+            <% }
+    } %>
         </p>
-        <% }%>
-        <p>Reintegro: <%=bol.generarReintegro()%></p>
-        <p>Importe boleto: <%=apuesta%>€</p>
-        <% }%>
+        <% } %>
+        <p>Reintegro: <%=boleto.generarReintegro()%></p>
+        <p>Importe boleto: <%= primitiva[i].length %>€</p>
+        <% } %>
         <p>El importe total que debe abonar es <%=precio%>€.</p>
     </body>
 </html>

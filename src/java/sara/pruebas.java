@@ -32,6 +32,7 @@ public class pruebas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         Boleto b = new Boleto();
@@ -40,17 +41,18 @@ public class pruebas extends HttpServlet {
         apuestas[1] = 3;
         apuestas[2] = 1;
         int[][][] primitiva = b.generarPrimitiva(apuestas);
-        
-        for (int i = 0; i < primitiva.length; i++) {
-            out.println("<p>Boleto " + i + "</p>");
-            for (int j = 0; j < primitiva[i].length; j++) {
-                out.println("<p>Apuesta " + j + ": ");
-                for (int k = 0; k < primitiva[j].length; k++) {
-                    out.println(primitiva[i][j][k] + " ");
-                }
-                out.println("</p>");
-            }
-        }
+
+
+         for (int i = 0; i < primitiva.length; i++) {
+         out.println("<p>Boleto " + i + "</p>");
+         for (int j = 0; j < primitiva[i].length; j++) {
+         out.println("<p>Apuesta " + j + ": ");
+         for (int k = 0; k < 6; k++) {
+         out.println(primitiva[i][j][k] + " ");
+         }
+         out.println("</p>");
+         }
+         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

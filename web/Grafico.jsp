@@ -6,12 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="sara.Boleto" %>
-<% 
-    String[] numApu = (String[]) request.getAttribute("numApu");
-    int[][] apuestasGeneradas = (int[][]) request.getAttribute("apuestasGeneradas");
-    Integer numBol = (Integer) request.getAttribute("numBol");
+<%
+    int[][][] primitiva = (int[][][]) request.getAttribute("primitiva");
     String precio = (String) request.getAttribute("precio");
-    Boleto bol = new Boleto();
+    Boleto boleto = new Boleto();
 %>
 <!DOCTYPE html>
 <html>
@@ -21,33 +19,38 @@
     </head>
     <body>
         <%@include file="Encabezado.jsp" %>
-        <% for (int b = 0; b < numBol; b++) {%>
-        <p>Boleto <%=b + 1%>º</p>
-        <p>Reintegro: <%= bol.generarReintegro()%></p>
-        <% int apuesta = Integer.parseInt(numApu[b]);%>
-        <p>Importe boleto: <%=apuesta%>€</p>
+        <% for (int i = 0; i < primitiva.length; i++) {%>
+        <p>Boleto <%= i + 1%>º</p>
+        <p>Reintegro: <%= boleto.generarReintegro()%></p>
+        <p>Importe boleto: <%= primitiva[i].length %>€</p>
         <table border="1">
             <% for (int fila = 0; fila < 10; fila++) { %>
             <tr>
-                <% for (int numApuesta = 1; numApuesta <= apuesta; numApuesta++) { %>
-                <% for (int columna = 0; columna < 5; columna++) { %>
-                <% if (fila == 0 && columna == 0) {%>
-                <td style="background-color: black; color: white;"><%= numApuesta%></td>
-                <% } else { %>
-                <% int valorColumna = fila + (columna * 10);%>
-                <% if (bol.indexOf(apuestasGeneradas[b], valorColumna)) {%>
+                <%
+                    for (int j = 0; j < primitiva[i].length; j++) {
+                        for (int columna = 0; columna < 5; columna++) {
+                            int valorColumna = fila + (columna * 10);
+                            if (fila == 0 && columna == 0) {
+                %>
+                <td style="background-color: black; color: white;"><%= j%></td>
+                <%
+                } else if (boleto.indexOf(primitiva[i][j], valorColumna)) {
+                %>
                 <td style="background-color: green; color: white;"><%= valorColumna%></td>
-                <% } else {%>
+                <%
+                } else {
+                %>
                 <td><%=valorColumna%></td>
-                <% } %>
-                <% }%>
-                <% } %>
-                <% } %>
+                <%
+                            }
+                        }
+                    }
+                %>
             </tr>
             <% }%>
         </table>
+        <% } %>
         <br />
-        <%}%>
-        <p>El importe total que debe abonar son <%= precio %>€</p>
+        <p>El importe total que debe abonar son <%= precio%>€</p>
     </body>
 </html>

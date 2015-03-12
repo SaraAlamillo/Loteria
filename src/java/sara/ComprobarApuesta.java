@@ -33,73 +33,94 @@ public class ComprobarApuesta extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
+
         HttpSession session = request.getSession();
         RequestDispatcher dispatcher;
         Usuario usuario = new Usuario();
+
         if (usuario.validado(session)) {
+
             if (request.getParameter("numBol") == null) {
+
                 response.sendRedirect("/Loteria/Boleto");
+
             } else {
+
                 Integer numBol = Integer.parseInt(request.getParameter("numBol"));
                 Boleto boleto = new Boleto();
+
                 if (request.getParameter("enviar") != null) {
+
                     String[] numApu = request.getParameterValues("numApu");
+
                     try {
+                        
                         Integer precio = 0;
-                        int[][] apuestasGeneradas = new int[numBol][];
 
                         for (int clave = 0; clave < numBol; clave++) {
+                            
                             Integer numero = Integer.parseInt(numApu[clave]);
 
                             if (numero < 1 || numero > 8) {
+                                
                                 request.setAttribute("numBol", numBol);
                                 request.setAttribute("numApu", numApu);
                                 request.setAttribute("error", "Debe introducir un número entero entre 1 y 8");
+                                
                                 dispatcher = request.getRequestDispatcher("Apuesta.jsp");
                                 dispatcher.forward(request, response);
                             }
 
-                            precio = precio + numero;
-
-                            int cantidadApuestas = Integer.parseInt(numApu[clave]);
-
-                            for (int i = 0; i < cantidadApuestas; i++) {
-                                apuestasGeneradas[clave] = boleto.generarApuesta();
-                            }
+                            precio += numero;
                         }
+                        
+                        int[] apuestas = new int[numApu.length];
+                        
+                        for (int i = 0; i < numApu.length; i++) {
+                            apuestas[i] = Integer.parseInt(numApu[i]);
+                            
+                        }
+                        
+                        int[][][] primitiva = boleto.generarPrimitiva(apuestas);
+                        
                         request.setAttribute("numApu", numApu);
                         request.setAttribute("numBol", numBol);
-                        request.setAttribute("apuestasGeneradas", apuestasGeneradas);
+                        request.setAttribute("primitiva", primitiva);
                         request.setAttribute("precio", precio.toString());
 
                         String modo = (String) session.getAttribute("modo");
                         String ruta = "";
-                        
+
                         if (modo == null) {
                             ruta = "index.jsp";
                         } else {
                             ruta = modo + ".jsp";
 
                         }
-                        
+
                         dispatcher = request.getRequestDispatcher(ruta);
                         dispatcher.forward(request, response);
+                        
                     } catch (NumberFormatException | IOException e) {
                         request.setAttribute("numBol", numBol);
                         request.setAttribute("numApu", numApu);
                         request.setAttribute("error", "Debe seleccionar algún número");
+                        
                         dispatcher = request.getRequestDispatcher("Apuesta.jsp");
                         dispatcher.forward(request, response);
                     }
                 } else {
                     request.setAttribute("numBol", numBol);
+                    
                     dispatcher = request.getRequestDispatcher("Apuesta.jsp");
                     dispatcher.forward(request, response);
                 }
             }
         } else {
             request.setAttribute("mensaje", "Debe validarse para utilizar la aplicación.");
+            
             dispatcher = request.getRequestDispatcher("Login.jsp");
             dispatcher.forward(request, response);
         }
