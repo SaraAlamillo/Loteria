@@ -6,13 +6,13 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="sara.Boleto" %>
-<% String[] numApu = (String[]) request.getAttribute("numApu"); %>
-<% int[][] apuestasGeneradas = (int[][]) request.getAttribute("apuestasGeneradas"); %>
-<% String boleto = (String) request.getAttribute("numBol"); %>
-<% String precio = (String) request.getAttribute("precio"); %>
-<% Integer numBol = Integer.parseInt(boleto);%>
-<%! Boleto bol = new Boleto(); %>
-<%! int precio = 0;%>
+<% 
+    String[] numApu = (String[]) request.getAttribute("numApu");
+    int[][] apuestasGeneradas = (int[][]) request.getAttribute("apuestasGeneradas");
+    Integer numBol = (Integer) request.getAttribute("numBol");
+    String precio = (String) request.getAttribute("precio");
+    Boleto bol = new Boleto();
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,6 +48,6 @@
         </table>
         <br />
         <%}%>
-        <p>El importe total que debe abonar son <%= precio%>€</p>
+        <p>El importe total que debe abonar son <%= precio %>€</p>
     </body>
 </html>

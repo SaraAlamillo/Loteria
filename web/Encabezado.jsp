@@ -5,7 +5,7 @@
 --%>
 <%@page import="sara.Usuario" %>
 <%! Usuario usuario = new Usuario(); %>
-<p><a href="/Loteria/Modo?modo=texto">Modo texto</a> // <a href="/Loteria/Modo?modo=grafico">Modo gráfico</a></p>
+<p><a href="/Loteria/Modo?modo=Texto">Modo texto</a> // <a href="/Loteria/Modo?modo=Grafico">Modo gráfico</a></p>
 <% if (usuario.validado(request.getSession())) { %>
 <p><a href="/Loteria/CerrarSesion">Cerrar sesión</a></p>
 <% } %>

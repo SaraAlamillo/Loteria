@@ -36,6 +36,19 @@ public class Boleto {
 
         return apuesta;
     }
+    
+    public int[][][] generarPrimitiva(int[] apuestas) {
+        int cantidadBoletos = apuestas.length;
+        int[][][] primitiva = new int[cantidadBoletos][][];
+        
+        for (int i = 0; i < cantidadBoletos; i++) {
+            for (int j = 0; j < apuestas[i]; j++) {
+                primitiva[i][j] = this.generarApuesta();
+            }
+        }
+        
+        return primitiva;
+    }
 
     public boolean indexOf(int[] arr, int targetValue) {
         for (int s : arr) {

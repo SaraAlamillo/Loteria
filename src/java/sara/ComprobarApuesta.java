@@ -74,14 +74,16 @@ public class ComprobarApuesta extends HttpServlet {
                         request.setAttribute("precio", precio.toString());
 
                         String modo = (String) session.getAttribute("modo");
-
-                        if (modo.equals("texto")) {
-                            dispatcher = request.getRequestDispatcher("Texto.jsp");
-                        } else if (modo.equals("grafico")) {
-                            dispatcher = request.getRequestDispatcher("Grafico.jsp");
+                        String ruta = "";
+                        
+                        if (modo == null) {
+                            ruta = "index.jsp";
                         } else {
-                            dispatcher = request.getRequestDispatcher("index.jsp");
+                            ruta = modo + ".jsp";
+
                         }
+                        
+                        dispatcher = request.getRequestDispatcher(ruta);
                         dispatcher.forward(request, response);
                     } catch (NumberFormatException | IOException e) {
                         request.setAttribute("numBol", numBol);

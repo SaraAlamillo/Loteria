@@ -6,11 +6,12 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="sara.Boleto" %>
-<% String[] numApu = (String[]) request.getAttribute("numApu"); %>
-<% String boleto = (String) request.getAttribute("numBol"); %>
-<% String precio = (String) request.getAttribute("precio"); %>
-<% Integer numBol = Integer.parseInt(boleto);%>
-<%! Boleto bol = new Boleto();%>
+<%
+    String[] numApu = (String[]) request.getAttribute("numApu");
+    Integer boleto = (Integer) request.getAttribute("numBol");
+    String precio = (String) request.getAttribute("precio");
+    Boleto bol = new Boleto();
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +20,7 @@
     </head>
     <body>
         <%@include file="Encabezado.jsp" %>
-        <% for (Integer i = 1; i <= numBol; i++) {%>
+        <% for (Integer i = 1; i <= boleto; i++) {%>
         <p>Boleto <%= i%>º</p>
         <% Integer apuesta = Integer.parseInt(numApu[i - 1]); %>
         <% for (Integer j = 1; j <= apuesta; j++) {%>
