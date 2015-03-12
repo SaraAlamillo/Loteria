@@ -7,19 +7,20 @@ package sara;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author 2daw
  */
-@WebServlet(name = "pruebas", urlPatterns = {"/pruebas"})
-public class pruebas extends HttpServlet {
+@WebServlet(name = "RecuperarAnterior", urlPatterns = {"/Anterior"})
+public class RecuperarAnterior extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,27 +33,46 @@ public class pruebas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        Boleto b = new Boleto();
-        int[] apuestas = new int[3];
-        apuestas[0] = 2;
-        apuestas[1] = 3;
-        apuestas[2] = 1;
-        int[][][] primitiva = b.generarPrimitiva(apuestas);
 
+        HttpSession session = request.getSession();
+        RequestDispatcher dispatcher;
+        Usuario usuario = new Usuario();
+        Boleto boleto = new Boleto();
 
-         for (int i = 0; i < primitiva.length; i++) {
-         out.println("<p>Boleto " + i + "</p>");
-         for (int j = 0; j < primitiva[i].length; j++) {
-         out.println("<p>Apuesta " + j + ": ");
-         for (int k = 0; k < 6; k++) {
-         out.println(primitiva[i][j][k] + " ");
-         }
-         out.println("</p>");
-         }
-         }
+        if (usuario.validado(session)) {
+            int[][][] primitiva = boleto.obtenerAnterior(session);
+            if (primitiva == null) {
+                request.setAttribute("error", "No existe ninguna primitiva anterior.");
+                dispatcher = request.getRequestDispatcher("Boleto.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                Integer precio = 0;
+                for (int[][] p : primitiva) {
+                    precio += p.length;
+                }
+                
+                request.setAttribute("primitiva", primitiva);
+                request.setAttribute("precio", precio.toString());
+
+                String modo = (String) session.getAttribute("modo");
+                String ruta = "";
+
+                if (modo == null) {
+                    ruta = "index.jsp";
+                } else {
+                    ruta = modo + ".jsp";
+
+                }
+
+                dispatcher = request.getRequestDispatcher(ruta);
+                dispatcher.forward(request, response);
+            }
+        } else {
+            request.setAttribute("mensaje", "Debe validarse para utilizar la aplicación.");
+            dispatcher = request.getRequestDispatcher("Login.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,7 +1,7 @@
 package sara;
 
-import java.io.PrintWriter;
 import java.util.Random;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -59,5 +59,13 @@ public class Boleto {
             }
         }
         return false;
+    }
+
+    public void guardarPrimitiva(int[][][] primitiva, HttpSession session) {
+        session.setAttribute("anterior", primitiva);
+    }
+    
+    public int[][][] obtenerAnterior(HttpSession session) {
+        return (int[][][]) session.getAttribute("anterior");
     }
 }

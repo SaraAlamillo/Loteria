@@ -84,9 +84,8 @@ public class ComprobarApuesta extends HttpServlet {
                         }
                         
                         int[][][] primitiva = boleto.generarPrimitiva(apuestas);
+                        boleto.guardarPrimitiva(primitiva, session);
                         
-                        request.setAttribute("numApu", numApu);
-                        request.setAttribute("numBol", numBol);
                         request.setAttribute("primitiva", primitiva);
                         request.setAttribute("precio", precio.toString());
 

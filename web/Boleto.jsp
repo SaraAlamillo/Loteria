@@ -18,6 +18,7 @@
         <form action="/Loteria/Boleto" method="POST">
             <p>Número de boletos: <input type="text" name="numBol" value="<%= numBol == null? "" : numBol %>" /></p>
             <p><input type="submit" name="enviar" value="Continuar" /></p>
+            <p><a href="/Loteria/Anterior">Repetir la última primitiva</a></p>
             <% if (mensaje_error != null) {%>
             <p><%= mensaje_error%></p>
             <% }%>        
