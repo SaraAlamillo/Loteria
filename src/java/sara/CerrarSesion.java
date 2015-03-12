@@ -6,20 +6,20 @@
 package sara;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author 2daw
+ * @author Sara
  */
-@WebServlet(name = "SeleccionarModo", urlPatterns = {"/Modo"})
-public class SeleccionarModo extends HttpServlet {
+@WebServlet(name = "CerrarSesion", urlPatterns = {"/CerrarSesion"})
+public class CerrarSesion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,27 +32,11 @@ public class SeleccionarModo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        RequestDispatcher dispatcher;
         Usuario usuario = new Usuario();
-        if (usuario.validado(session)) {
-            String modo = request.getParameter("modo");
-
-            if (modo == null) {
-                 dispatcher = request.getRequestDispatcher("index.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                session.setAttribute("modo", modo);
-                response.sendRedirect("/Loteria/Boleto");
-
-            }
-        } else {
-            request.setAttribute("mensaje", "Debe validarse para utilizar la aplicación.");
-            dispatcher = request.getRequestDispatcher("Login.jsp");
+        usuario.salir(request.getSession());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

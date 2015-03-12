@@ -12,13 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Sara
  */
 @WebServlet(urlPatterns = {"/Boleto"})
-public class Boleto_s extends HttpServlet {
+public class ComprobarBoleto extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,32 +34,39 @@ public class Boleto_s extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        HttpSession session = request.getSession();
         RequestDispatcher dispatcher;
-
-        if (request.getParameter("enviar") == null) {
-            dispatcher = request.getRequestDispatcher("Boleto.jsp");
-            dispatcher.forward(request, response);
-        } else {
-            String numBol = request.getParameter("numBol");
-            try {
-                Integer numero = Integer.parseInt(numBol);
-
-                if (numero < 1 || numero > 10) {
-                    request.setAttribute("numBol", numBol);
-                    request.setAttribute("error", "Debe introducir un número entero entre 1 y 10");
-                    dispatcher = request.getRequestDispatcher("Boleto.jsp");
-                    dispatcher.forward(request, response);
-                } else {
-                    response.sendRedirect("/Loteria/Apuesta?numBol=" + numero);
-                }
-
-            } catch (NumberFormatException | IOException e) {
-                request.setAttribute("numBol", numBol);
-                request.setAttribute("error", "Debe introducir un número entero");
+        Usuario usuario = new Usuario();
+        if (usuario.validado(session)) {
+            if (request.getParameter("enviar") == null) {
                 dispatcher = request.getRequestDispatcher("Boleto.jsp");
                 dispatcher.forward(request, response);
-            }
+            } else {
+                String numBol = request.getParameter("numBol");
+                try {
+                    Integer numero = Integer.parseInt(numBol);
 
+                    if (numero < 1 || numero > 10) {
+                        request.setAttribute("numBol", numBol);
+                        request.setAttribute("error", "Debe introducir un número entero entre 1 y 10");
+                        dispatcher = request.getRequestDispatcher("Boleto.jsp");
+                        dispatcher.forward(request, response);
+                    } else {
+                        response.sendRedirect("/Loteria/Apuesta?numBol=" + numero);
+                    }
+
+                } catch (NumberFormatException | IOException e) {
+                    request.setAttribute("numBol", numBol);
+                    request.setAttribute("error", "Debe introducir un número entero");
+                    dispatcher = request.getRequestDispatcher("Boleto.jsp");
+                    dispatcher.forward(request, response);
+                }
+
+            }
+        } else {
+            request.setAttribute("mensaje", "Debe validarse para utilizar la aplicación.");
+            dispatcher = request.getRequestDispatcher("Login.jsp");
+            dispatcher.forward(request, response);
         }
 
     }

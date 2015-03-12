@@ -12,14 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author 2daw
+ * @author Sara
  */
-@WebServlet(name = "SeleccionarModo", urlPatterns = {"/Modo"})
-public class SeleccionarModo extends HttpServlet {
+@WebServlet(name = "ComprobarUsuario", urlPatterns = {"/Usuario"})
+public class ComprobarUsuario extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,26 +31,21 @@ public class SeleccionarModo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        RequestDispatcher dispatcher;
+            
         Usuario usuario = new Usuario();
-        if (usuario.validado(session)) {
-            String modo = request.getParameter("modo");
-
-            if (modo == null) {
-                 dispatcher = request.getRequestDispatcher("index.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                session.setAttribute("modo", modo);
-                response.sendRedirect("/Loteria/Boleto");
-
-            }
-        } else {
-            request.setAttribute("mensaje", "Debe validarse para utilizar la aplicación.");
-            dispatcher = request.getRequestDispatcher("Login.jsp");
+        String nombre = (String) request.getParameter("nombre");
+        String clave = (String) request.getParameter("clave");
+        
+        if (usuario.validar(nombre, clave)) {
+        usuario.registrarAcceso(request.getSession());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
+        } else {
+            request.setAttribute("mensaje", "El usuario o la contraseña es incorrecto.");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+            dispatcher.forward(request, response);
+            
         }
     }
 

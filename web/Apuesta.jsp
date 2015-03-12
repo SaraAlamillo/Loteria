@@ -5,8 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% String numBol = (String) request.getAttribute("numBol"); %>
-<% Integer numero = Integer.parseInt(numBol);%>
+<% Integer numBol = (Integer)request.getAttribute("numBol"); %>
 <% String mensaje_error = (String) request.getAttribute("error");%>
 <% String[] numApu = (String[]) request.getAttribute("numApu");%>
 <!DOCTYPE html>
@@ -17,9 +16,9 @@
     </head>
     <body>
         <%@include file="Encabezado.jsp" %>
-        <p>Se juegan <%= numBol%> boletos</p>
-        <form action="/Loteria/Apuesta?numBol=<%= numBol%>" method="POST">
-            <% for (Integer i = 0; i < numero; i++) {%>
+        <p>Se juegan <%= numBol.toString() %> boletos</p>
+         <form action="/Loteria/Apuesta?numBol=<%= numBol.toString() %>" method="POST">
+             <% for (Integer i = 0; i < numBol; i++) {%>
             <p>
                 Boleto <%= i + 1 %> - Número de apuestas: 
                 <select name="numApu">
